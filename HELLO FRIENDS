@@ -1,0 +1,72 @@
+if game.PlaceId == 18550498098 then
+    for _,obj in pairs(workspace:GetChildren()) do if obj.Name == "arena" and obj:IsA("Part") then obj:Destroy() end end
+    local safe = Instance.new("Part",workspace)
+    safe.Name = "arena"
+    safe.Size = Vector3.new(2000,10,2000)
+    safe.Transparency = 0.95
+    safe.CanCollide = true
+    safe.Anchored = true
+    safe.CFrame = CFrame.new(595,120,-330)
+    safe.Material = Enum.Material.Neon
+    local ZeroLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/TheLostStar7/Zero-Library/refs/heads/main/ZeroLib')))()
+    local Window = ZeroLib:CreateWindow({Title = "ZeroHub | Credits: theloststar0802"})
+    local Tabs = {
+        Main = Window:AddTab({Title = "Main Tab"}),
+        Misc = Window:AddTab({Title = "Misc Tab"})
+    }
+    local char = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
+    local hrp = char:WaitForChild("HumanoidRootPart")
+    local hum = char:WaitForChild("Humanoid")
+    local function notify(title,text,delay)
+        game:GetService("StarterGui"):SetCore("SendNotification",{Title = title,Text = text,Icon = "rbxassetid://7733658504",Duration = delay})
+    end
+    local killaura = false
+    Tabs.Main:AddToggle({Title = "KillAura",Description = "Slap Every Mob.",Flag = "KillAura",Callback = function(v)
+        notify("KillAura",v and "On" or "Off")
+        killaura = not killaura
+    end,})
+    Tabs.Main:AddButton({Title = "Safe Spot",Callback = function()
+        hrp.CFrame = CFrame.new(595,124,-330)
+    end,})
+    Tabs.Main:AddButton({Title = "Extra Heart",Callback = function()
+        hrp.CFrame = CFrame.new(3271.42334,-218.088181,822.746155,-0.994649589,0.00018143536,0.103305899,-8.53231885e-09,0.99999845,-0.00175637181,-0.103306055,-0.00174697535,-0.994648099)
+    end,})
+    Tabs.Main:AddButton({Title = "Regen Cube",Callback = function()
+        hrp.CFrame = CFrame.new(3286.16675,-67.2077789,823.898865,-0.98922509,-0.00276089297,0.146376535,9.32137123e-09,0.99982214,0.0188582912,-0.146402568,0.0186550952,-0.989049196)
+    end,})
+    Tabs.Main:AddButton({Title = "Boss Fight Lever",Callback = function()
+        hrp.CFrame = CFrame.new(3276.26001,-70.7087555,822.507996,0,0,1,0,1,-0,-1,0,0)
+    end,})
+    Tabs.Misc:AddButton({Title = "Destroy Gui",Callback = function()
+        ZeroLib:Destroy()
+    end,})
+    Tabs.Misc:AddButton({Title = "Fly Gui",Callback = function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Giangplay/Script/main/Fly_V3.lua"))()
+    end,})
+    Tabs.Misc:AddButton({Title = "Copy The UILib Link",Callback = function()
+        setclipboard("https://github.com/TheLostStar7/Zero-Library")
+    end,})
+    game:GetService("RunService").Heartbeat:Connect(function()
+        if killaura then
+            if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Lantern") then hum:EquipTool(game:GetService("Players").LocalPlayer.Backpack.Lantern) end
+            for _,v in pairs(workspace:GetChildren()) do
+                if v.Name == "GuideNPC" and v:FindFirstChild("HumanoidRootPart") then
+                    char:FindFirstChildWhichIsA("Tool"):Activate()
+                    char.Lantern.Network:FireServer("Hit",v.HumanoidRootPart)
+                elseif v.Name == "ReplicaNPC" and v:FindFirstChild("HumanoidRootPart") then
+                    char:FindFirstChildWhichIsA("Tool"):Activate()
+                    char.Lantern.Network:FireServer("Hit",v.HumanoidRootPart)
+                elseif v.Name == "TrackGloveMissile" then
+                    char:FindFirstChildWhichIsA("Tool"):Activate()
+                    char.Lantern.Network:FireServer("Hit",v)
+                elseif v.Name == "golem" and v:FindFirstChild("Hitbox") then
+                    char:FindFirstChildWhichIsA("Tool"):Activate()
+                    char.Lantern.Network:FireServer("Hit",v.Hitbox)
+                elseif "DungeonGolem" and v:FindFirstChild("HumanoidRootPart") then
+                    char:FindFirstChildWhichIsA("Tool"):Activate()
+                    char.Lantern.Network:FireServer("Hit",v.HumanoidRootPart)
+                end
+            end
+        end
+    end)
+end
