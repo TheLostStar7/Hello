@@ -1,1 +1,49 @@
- 
+local char = game:GetService("Players").LocalPlayer.Character or game:GetService("Players").LocalPlayer.CharacterAdded:Wait()
+local hum = char:WaitForChild("Humanoid")
+local hrp = char:WaitForChild("HumanoidRootPart")
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
+  char = c
+  hum = c:WaitForChild("Humanoid")
+  hrp = c:WaitForChild("HumanoidRootPart")
+end)
+local playing = false
+hum.AnimationPlayed:Connect(function(track)
+  if track.Animation.AnimationId == "rbxassetid://71186871415348" then
+    playing = true
+    local current = hrp
+    local bodypos = Instance.new("BodyPosition")
+    bodypos.MaxForce = Vector3.new(0,math.huge,0)
+    bodypos.P = 10000
+    bodypos.D = 1000
+    bodypos.Position = current.Position+Vector3.new(0,20,0)
+    bodypos.Parent = current
+    task.spawn(function()
+      while playing do
+        local still = false
+        for _,t in ipairs(hum:GetPlayingAnimationTracks()) do
+          if t.Animation.AnimationId == "rbxassetid://71186871415348" then
+            still = true
+            break
+          end
+        end
+        if not still then
+          playing = false
+          break
+        end
+        bodypos:Destroy()
+        current.CFrame = current.CFrame-Vector3.new(0,20,0)
+        task.wait(1.5)
+        bodypos = Instance.new("BodyPosition")
+        bodypos.MaxForce = Vector3.new(0,math.huge,0)
+        bodypos.P = 10000
+        bodypos.D = 1000
+        bodypos.Position = current.Position+Vector3.new(0,20,0)
+        bodypos.Parent = current
+        task.wait(3)
+      end
+      if bodypos then
+        bodypos:Destroy()
+      end
+    end)
+  end
+end)
